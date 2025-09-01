@@ -121,26 +121,26 @@ body {
     display: none;
 }
 
-/* Coming Soon Banner */
+/* Coming Soon Banner - Railway optimized */
 .coming-soon-banner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    margin: 0 1rem;
-    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.5rem 1rem !important;
+    margin: 0 1rem !important;
+    height: 100% !important;
 }
 
 .coming-soon-text {
-    color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 0;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 0px;
-    word-break: break-all;
-    text-align: center;
+    color: #ffffff !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0 !important;
+    font-family: 'Courier New', monospace !important;
+    letter-spacing: 0px !important;
+    word-break: break-all !important;
+    text-align: center !important;
 }
 
 .coming-soon-braille {
