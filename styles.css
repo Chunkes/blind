@@ -121,6 +121,38 @@ body {
     display: none;
 }
 
+/* Coming Soon Banner */
+.coming-soon-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    height: 100%;
+}
+
+.coming-soon-text {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0px;
+    word-break: break-all;
+    text-align: center;
+}
+
+.coming-soon-braille {
+    color: #e8e8e8;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+    word-break: break-all;
+    text-align: center;
+    line-height: 1.2;
+}
+
 /* При наведении текст становится видимым - это "фишка" */
 body:hover {
     color: #ffffff;
@@ -938,6 +970,19 @@ body::after {
     }
     
     .braille-nav {
+        font-size: 0.7rem;
+    }
+    
+    .coming-soon-banner {
+        margin: 0 0.5rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .coming-soon-text {
+        font-size: 1rem;
+    }
+    
+    .coming-soon-braille {
         font-size: 0.7rem;
     }
 }
