@@ -43,6 +43,112 @@ document.addEventListener('DOMContentLoaded', function() {
         blockquote: () => playBeep(350, 300, 0.08)
     };
 
+    // Reading area elements
+    let readingArea = null;
+    let originalTexts = new Map();
+
+     // Система слоев - английский снизу, Брайль сверху
+     function initializeLayers(element, englishText) {
+         if (element.dataset.layered) return;
+         
+         const brailleText = element.textContent;
+         
+         // Сначала измеряем высоту контента
+         const tempDiv = document.createElement('div');
+         tempDiv.style.cssText = `
+             position: absolute;
+             visibility: hidden;
+             width: ${element.offsetWidth}px;
+             font-family: ${window.getComputedStyle(element).fontFamily};
+             font-size: ${window.getComputedStyle(element).fontSize};
+             line-height: ${window.getComputedStyle(element).lineHeight};
+             letter-spacing: ${window.getComputedStyle(element).letterSpacing};
+             padding: 0.8rem;
+             box-sizing: border-box;
+             word-wrap: break-word;
+             white-space: normal;
+         `;
+         tempDiv.textContent = Math.max(brailleText.length, englishText.length) > brailleText.length ? englishText : brailleText;
+         document.body.appendChild(tempDiv);
+         const contentHeight = tempDiv.offsetHeight;
+         document.body.removeChild(tempDiv);
+         
+         // Устанавливаем минимальную высоту контейнера
+         element.style.minHeight = contentHeight + 'px';
+         element.innerHTML = '';
+         element.style.position = 'relative';
+         
+         // Английский слой (снизу, всегда видимый)
+         const englishLayer = document.createElement('div');
+         englishLayer.className = 'english-layer';
+         englishLayer.textContent = englishText;
+         
+         // Брайль слой (сверху, закрывает английский, исчезает в области курсора)
+         const brailleLayer = document.createElement('div');
+         brailleLayer.className = 'braille-layer';
+         brailleLayer.textContent = brailleText;
+         
+         element.appendChild(englishLayer);
+         element.appendChild(brailleLayer);
+         element.dataset.layered = 'true';
+     }
+
+     function updateLayers(element, mouseX, mouseY) {
+         const brailleLayer = element.querySelector('.braille-layer');
+         if (!brailleLayer) return;
+         
+         // Координаты относительно элемента-контейнера
+         const elementRect = element.getBoundingClientRect();
+         const relativeX = mouseX - elementRect.left;
+         const relativeY = mouseY - elementRect.top;
+         const radius = 50; // Радиус круга
+         
+         // Маска для Брайля - делаем "дырку" в области курсора
+         const brailleMask = `radial-gradient(circle ${radius}px at ${relativeX}px ${relativeY}px, transparent 0%, transparent ${radius}px, black ${radius + 1}px)`;
+         
+         // Применяем маску, которая делает прозрачную область в слое Брайля
+         brailleLayer.style.mask = brailleMask;
+         brailleLayer.style.webkitMask = brailleMask;
+     }
+
+     function restoreLayers(element) {
+         const brailleLayer = element.querySelector('.braille-layer');
+         if (brailleLayer) {
+             brailleLayer.style.mask = 'none';
+             brailleLayer.style.webkitMask = 'none';
+         }
+     }
+
+     function createReadingArea() {
+         readingArea = document.createElement('div');
+         readingArea.style.cssText = `
+             position: fixed;
+             width: 100px;
+             height: 100px;
+             border: 2px solid rgba(255, 255, 255, 0.5);
+             border-radius: 50%;
+             pointer-events: none;
+             z-index: 1000;
+             background: transparent;
+             opacity: 0;
+             transition: opacity 0.2s ease;
+         `;
+         document.body.appendChild(readingArea);
+     }
+
+     function showReadingArea(e) {
+         if (!readingArea) createReadingArea();
+         readingArea.style.left = (e.clientX - 50) + 'px';
+         readingArea.style.top = (e.clientY - 50) + 'px';
+         readingArea.style.opacity = '1';
+     }
+
+     function hideReadingArea() {
+         if (readingArea) {
+             readingArea.style.opacity = '0';
+         }
+     }
+
     // Добавляем звуковые эффекты к элементам
     function addSoundEffects() {
         // Заголовки
@@ -50,28 +156,36 @@ document.addEventListener('DOMContentLoaded', function() {
             el.addEventListener('mouseenter', sounds.header);
         });
 
-        document.querySelectorAll('h2').forEach(el => {
-            el.addEventListener('mouseenter', sounds.h2);
-        });
+         // Шрифт Брайля с эффектом слоев
+         document.querySelectorAll('.braille-text').forEach(el => {
+             el.addEventListener('mouseenter', (e) => {
+                 sounds.braille();
+                 const englishText = el.getAttribute('data-english');
+                 if (englishText) {
+                     showReadingArea(e);
+                     initializeLayers(el, englishText);
+                     updateLayers(el, e.clientX, e.clientY);
+                 }
+             });
+             
+             el.addEventListener('mousemove', (e) => {
+                 if (readingArea && readingArea.style.opacity === '1') {
+                     readingArea.style.left = (e.clientX - 50) + 'px';
+                     readingArea.style.top = (e.clientY - 50) + 'px';
+                     
+                     updateLayers(el, e.clientX, e.clientY);
+                 }
+             });
+             
+             el.addEventListener('mouseleave', () => {
+                 hideReadingArea();
+                 restoreLayers(el);
+             });
+         });
 
-        // Параграфы
-        document.querySelectorAll('p').forEach(el => {
-            el.addEventListener('mouseenter', sounds.p);
-        });
-
-        // Списки
-        document.querySelectorAll('li').forEach(el => {
-            el.addEventListener('mouseenter', sounds.li);
-        });
-
-        // Шрифт Брайля
+        // Обычный шрифт Брайля (в хедере и футере)
         document.querySelectorAll('.braille').forEach(el => {
             el.addEventListener('mouseenter', sounds.braille);
-        });
-
-        // Цитаты
-        document.querySelectorAll('blockquote').forEach(el => {
-            el.addEventListener('mouseenter', sounds.blockquote);
         });
 
         // Специальная кнопка
