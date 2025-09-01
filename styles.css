@@ -141,6 +141,18 @@ body {
     letter-spacing: 0px !important;
     word-break: break-all !important;
     text-align: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.coming-soon-text:hover {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+body:not(:hover) .coming-soon-text {
+    color: #ffffff !important;
+    opacity: 1 !important;
 }
 
 .coming-soon-braille {
@@ -156,6 +168,15 @@ body {
 /* При наведении текст становится видимым - это "фишка" */
 body:hover {
     color: #ffffff;
+}
+
+/* Исключаем баннер из общего правила hover */
+body:hover .coming-soon-text {
+    color: #ffffff !important;
+}
+
+body .coming-soon-banner * {
+    color: #ffffff !important;
 }
 
 /* Контейнер для центрирования хедера */
@@ -985,4 +1006,15 @@ body::after {
     .coming-soon-braille {
         font-size: 0.7rem;
     }
+}
+
+/* CRITICAL: Баннер CA должен ВСЕГДА быть белым! */
+.coming-soon-banner .coming-soon-text,
+.coming-soon-banner .coming-soon-text:hover,
+body:hover .coming-soon-banner .coming-soon-text,
+body:not(:hover) .coming-soon-banner .coming-soon-text,
+.nav-container .coming-soon-banner .coming-soon-text {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
