@@ -13,6 +13,15 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Баннер CA ВСЕГДА белый, независимо от состояния body */
+body .coming-soon-text {
+    color: #ffffff !important;
+}
+
+body:not(:hover) .coming-soon-text {
+    color: #ffffff !important;
+}
+
 /* Навигация */
 .navbar {
     background: #111111;
@@ -130,6 +139,7 @@ body {
     padding: 0.5rem 1rem !important;
     margin: 0 1rem !important;
     height: 100% !important;
+    color: #ffffff !important;
 }
 
 .coming-soon-text {
@@ -165,17 +175,26 @@ body:not(:hover) .coming-soon-text {
     line-height: 1.2;
 }
 
-/* При наведении текст становится видимым - это "фишка" */
+/* При наведении текст становится видимый - это "фишка" */
 body:hover {
     color: #ffffff;
 }
 
-/* Исключаем баннер из общего правила hover */
-body:hover .coming-soon-text {
+/* НО! Баннер CA всегда остается белым */
+body:hover .coming-soon-text,
+body:not(:hover) .coming-soon-text {
     color: #ffffff !important;
 }
 
-body .coming-soon-banner * {
+/* Принудительно устанавливаем белый цвет для всех состояний баннера */
+.coming-soon-banner,
+.coming-soon-banner *,
+body .coming-soon-banner,
+body .coming-soon-banner *,
+body:hover .coming-soon-banner,
+body:hover .coming-soon-banner *,
+body:not(:hover) .coming-soon-banner,
+body:not(:hover) .coming-soon-banner * {
     color: #ffffff !important;
 }
 
