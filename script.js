@@ -181,25 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // "Echo" effect for Braille text
-    document.querySelectorAll('.braille').forEach(el => {
-        el.addEventListener('click', function() {
-            const text = this.textContent;
-            this.style.animation = 'none';
-            setTimeout(() => {
-                this.style.animation = 'pulse 1s ease-in-out 3';
-            }, 10);
-            
-            showMessage("📖 Reading Braille...");
-            
-            // Sound out each "dot" in the Braille text
-            for (let i = 0; i < Math.min(text.length, 20); i++) {
-                setTimeout(() => {
-                    playBeep(300 + (i * 20), 100, 0.05);
-                }, i * 100);
-            }
-        });
-    });
+
 
     // Add CSS for pulse animation
     const pulseStyle = document.createElement('style');

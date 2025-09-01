@@ -49,19 +49,24 @@ h1:hover {
 }
 
 main {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    grid-auto-rows: auto;
 }
 
 .content-block {
     background: #0a0a0a;
-    margin: 2rem 0;
-    padding: 2rem;
+    margin: 0;
+    padding: 1.5rem;
     border-radius: 10px;
     border: 2px solid #222222;
     transition: all 0.3s ease;
     position: relative;
+    height: fit-content;
 }
 
 .content-block:hover {
@@ -82,8 +87,8 @@ main {
 
 h2 {
     color: #444444;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
     transition: color 0.3s ease;
 }
 
@@ -92,18 +97,18 @@ h2:hover {
 }
 
 p, li {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
 }
 
 ul, ol {
-    margin-left: 2rem;
-    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    margin-bottom: 0.8rem;
 }
 
 li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     transition: all 0.3s ease;
 }
 
@@ -115,8 +120,8 @@ li:hover {
 blockquote {
     background: #111111;
     border-left: 4px solid #333333;
-    padding: 1rem;
-    margin: 1rem 0;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
     font-style: italic;
     transition: all 0.3s ease;
 }
@@ -130,15 +135,16 @@ blockquote:hover {
 /* Шрифт Брайля */
 .braille {
     font-family: 'Courier New', monospace;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #222222;
     background: #050505;
-    padding: 1rem;
-    margin-top: 1rem;
+    padding: 0.6rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
     border-radius: 5px;
     border: 1px solid #333333;
-    letter-spacing: 2px;
-    line-height: 1.8;
+    letter-spacing: 1px;
+    line-height: 1.4;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -182,15 +188,15 @@ blockquote:hover {
 /* Звуковая кнопка */
 .sound-button {
     display: inline-block;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1.5rem;
     background: #1a1a1a;
     color: #666666;
     border: 2px solid #333333;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 1.2rem;
-    margin: 1rem 0;
+    font-size: 1rem;
+    margin: 0.8rem 0;
     text-align: center;
 }
 
@@ -268,31 +274,7 @@ body::after {
     outline-offset: 2px;
 }
 
-/* Скрытое сообщение, которое появляется при долгом наведении */
-.content-block::after {
-    content: '👁️ Ты что-то видишь? 👁️';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
 
-.content-block:hover::after {
-    opacity: 1;
-    animation: blink 2s infinite;
-}
-
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0.3; }
-}
 
 /* Мобильная адаптивность */
 @media (max-width: 768px) {
@@ -302,14 +284,43 @@ body::after {
     
     main {
         padding: 1rem;
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
     
     .content-block {
-        padding: 1.5rem;
+        padding: 1rem;
     }
     
     .braille {
-        font-size: 1.2rem;
-        letter-spacing: 1px;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        padding: 0.5rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    p, li {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    main {
+        padding: 0.5rem;
+    }
+    
+    .content-block {
+        padding: 0.8rem;
     }
 }
