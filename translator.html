@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦯 Braille Translator - BlindSite</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>CantSee</span>
+                <div class="braille-logo">⠠⠃⠇⠊⠝⠙⠠⠎⠊⠞⠑</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <span>Home</span>
+                        <div class="braille-nav">⠠⠓⠕⠍⠑</div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="translator.html" class="nav-link active">
+                        <span>Translator</span>
+                        <div class="braille-nav">⠠⠞⠗⠁⠝⠎⠇⠁⠞⠕⠗</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <main>
+        <div class="translator-container">
+            <div class="input-section">
+                <h2>English Text</h2>
+                <div class="braille">⠠⠑⠝⠛⠇⠊⠎⠓ ⠠⠞⠑⠭⠞</div>
+                <textarea 
+                    id="englishInput" 
+                    placeholder="Type your English text here..."
+                    rows="8"
+                    maxlength="500"
+                ></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/500 characters
+                </div>
+            </div>
+
+            <div class="translate-button-container">
+                <button id="translateBtn" class="translate-btn">
+                    <span>🔄 Translate</span>
+                    <div class="braille-btn">⠠⠞⠗⠁⠝⠎⠇⠁⠞⠑</div>
+                </button>
+            </div>
+
+            <div class="output-section">
+                <h2>Braille Output</h2>
+                <div class="braille">⠠⠃⠗⠁⠊⠇⠇⠑ ⠠⠕⠥⠞⠏⠥⠞</div>
+                <div id="brailleOutput" class="braille-output">
+                    <div class="placeholder">Your Braille translation will appear here...</div>
+                </div>
+                <div class="output-actions">
+                    <button id="copyBtn" class="action-btn" disabled>
+                        <span>📋 Copy</span>
+                        <div class="braille-btn">⠠⠉⠕⠏⠽</div>
+                    </button>
+                    <button id="clearBtn" class="action-btn">
+                        <span>🗑️ Clear</span>
+                        <div class="braille-btn">⠠⠉⠇⠑⠁⠗</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>About Braille</h2>
+            <div class="braille">⠠⠁⠃⠕⠥⠞ ⠠⠃⠗⠁⠊⠇⠇⠑</div>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>What is Braille?</h3>
+                    <div class="braille-small">⠠⠺⠓⠁⠞ ⠊⠎ ⠠⠃⠗⠁⠊⠇⠇⠑⠦</div>
+                    <p>Braille is a tactile writing system used by people who are visually impaired. It consists of patterns of raised dots arranged in cells.</p>
+                </div>
+                <div class="info-card">
+                    <h3>How it works</h3>
+                    <div class="braille-small">⠠⠓⠕⠺ ⠊⠞ ⠺⠕⠗⠅⠎</div>
+                    <p>Each Braille character is made up of six dots arranged in two columns of three dots each. Different combinations represent letters, numbers, and punctuation.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Louis Braille</h3>
+                    <div class="braille-small">⠠⠇⠕⠥⠊⠎ ⠠⠃⠗⠁⠊⠇⠇⠑</div>
+                    <p>Created by Louis Braille in 1824 when he was just 15 years old. This system revolutionized reading and writing for the blind community.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 BlindSite.com - All rights invisible</p>
+        <div class="braille">⠼⠼ ⠼⠃⠚⠃⠙ ⠠⠃⠇⠊⠝⠙⠠⠎⠊⠞⠑⠲⠉⠕⠍ ⠤ ⠠⠁⠇⠇ ⠗⠊⠛⠓⠞⠎ ⠊⠝⠧⠊⠎⠊⠃⠇⠑</div>
+        <p>Made with ❤️ and complete darkness</p>
+        <div class="braille">⠠⠍⠁⠙⠑ ⠺⠊⠞⠓ ♥ ⠁⠝⠙ ⠉⠕⠍⠏⠇⠑⠞⠑ ⠙⠁⠗⠅⠝⠑⠎⠎</div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="translator.js"></script>
+</body>
+</html>

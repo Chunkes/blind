@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
          const elementRect = element.getBoundingClientRect();
          const relativeX = mouseX - elementRect.left;
          const relativeY = mouseY - elementRect.top;
-         const radius = 50; // Радиус круга
+         const radius = 40; // Радиус круга
          
          // Маска для Брайля - делаем "дырку" в области курсора
          const brailleMask = `radial-gradient(circle ${radius}px at ${relativeX}px ${relativeY}px, transparent 0%, transparent ${radius}px, black ${radius + 1}px)`;
@@ -123,23 +123,20 @@ document.addEventListener('DOMContentLoaded', function() {
          readingArea = document.createElement('div');
          readingArea.style.cssText = `
              position: fixed;
-             width: 100px;
-             height: 100px;
-             border: 2px solid rgba(255, 255, 255, 0.5);
-             border-radius: 50%;
+             width: 80px;
+             height: 80px;
              pointer-events: none;
              z-index: 1000;
              background: transparent;
              opacity: 0;
-             transition: opacity 0.2s ease;
          `;
          document.body.appendChild(readingArea);
      }
 
      function showReadingArea(e) {
          if (!readingArea) createReadingArea();
-         readingArea.style.left = (e.clientX - 50) + 'px';
-         readingArea.style.top = (e.clientY - 50) + 'px';
+         readingArea.style.left = (e.clientX - 40) + 'px';
+         readingArea.style.top = (e.clientY - 40) + 'px';
          readingArea.style.opacity = '1';
      }
 
@@ -170,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
              
              el.addEventListener('mousemove', (e) => {
                  if (readingArea && readingArea.style.opacity === '1') {
-                     readingArea.style.left = (e.clientX - 50) + 'px';
-                     readingArea.style.top = (e.clientY - 50) + 'px';
+                     readingArea.style.left = (e.clientX - 40) + 'px';
+                     readingArea.style.top = (e.clientY - 40) + 'px';
                      
                      updateLayers(el, e.clientX, e.clientY);
                  }
@@ -310,11 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize sound effects
     addSoundEffects();
 
-    // Welcome message
-    setTimeout(() => {
-        showMessage("🦯 Welcome! Hover over elements for audio guidance");
-        playBeep(440, 500, 0.1);
-    }, 1000);
+
 
     // "Virtual screen" effect
     let screenReader = false;
