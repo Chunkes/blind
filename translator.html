@@ -16,7 +16,28 @@
     <link rel="icon" type="image/x-icon" href="/woj3.png?v=2">
     <link rel="icon" type="image/png" sizes="32x32" href="/woj3.png?v=2">
     <link rel="icon" type="image/png" sizes="16x16" href="/woj3.png?v=2">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=4">
+    <style>
+        /* КРИТИЧЕСКИЙ CSS ДЛЯ CA БАННЕРА */
+        .coming-soon-banner,
+        .coming-soon-banner *,
+        .coming-soon-text {
+            color: #ffffff !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        body:hover .coming-soon-banner,
+        body:hover .coming-soon-banner *,
+        body:hover .coming-soon-text,
+        body:not(:hover) .coming-soon-banner,
+        body:not(:hover) .coming-soon-banner *,
+        body:not(:hover) .coming-soon-text {
+            color: #ffffff !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
 </head>
 <body class="translator-page">
     <nav class="navbar">
