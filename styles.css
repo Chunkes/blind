@@ -480,62 +480,161 @@ body::after {
     }
 }
 
-/* Стили для переводчика */
-.translator-container {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 2rem;
-    align-items: start;
+/* Google Translate стиль для переводчика */
+.translator-main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.translator-header {
+    text-align: center;
     margin-bottom: 3rem;
 }
 
-.translate-button-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 3rem;
-}
-
-.input-section,
-.output-section {
-    background: #111111;
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid #333333;
-}
-
-.input-section h2,
-.output-section h2 {
-    margin-top: 0;
+.translator-header h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
     margin-bottom: 0.5rem;
-    color: #ffffff;
+    font-weight: 300;
 }
 
-#englishInput {
-    width: 100%;
-    background: #222222;
-    border: 1px solid #444444;
-    border-radius: 6px;
-    padding: 1rem;
-    color: #ffffff;
-    font-family: 'Courier New', monospace;
-    font-size: 1rem;
-    line-height: 1.5;
-    resize: vertical;
-    margin-top: 1rem;
+.translator-header p {
+    color: #999999;
+    font-size: 1.1rem;
+    margin: 0;
 }
 
-#englishInput:focus {
-    outline: none;
-    border-color: #666666;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+.translator-box {
+    background: #111111;
+    border-radius: 12px;
+    border: 1px solid #333333;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    min-height: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.input-panel,
+.output-panel {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem 0.5rem;
+    border-bottom: 1px solid #333333;
+}
+
+.language-label {
+    font-size: 0.9rem;
+    color: #cccccc;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .char-counter {
-    text-align: right;
+    font-size: 0.8rem;
     color: #666666;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+}
+
+#mainInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 1.5rem;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+}
+
+#mainInput::placeholder {
+    color: #666666;
+    font-size: 1.1rem;
+}
+
+.translate-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-left: 1px solid #333333;
+    border-right: 1px solid #333333;
+}
+
+.swap-icon {
+    background: #333333;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    color: #cccccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swap-icon:hover {
+    background: #444444;
+    color: #ffffff;
+    transform: rotate(180deg);
+}
+
+.swap-icon:active {
+    transform: scale(0.9);
+}
+
+.output-panel {
+    border-left: 1px solid #333333;
+}
+
+.output-text {
+    flex: 1;
+    padding: 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #ffffff;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.output-text .placeholder {
+    color: #666666;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    color: #666666;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover:not(:disabled) {
+    background: #333333;
+    color: #ffffff;
+}
+
+.copy-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .translate-btn {
@@ -696,28 +795,50 @@ body::after {
     margin: 0;
 }
 
+/* Адаптивность для переводчика */
 @media (max-width: 768px) {
-    .translator-container {
+    .translator-main {
+        padding: 1rem;
+    }
+    
+    .translator-header h1 {
+        font-size: 2rem;
+    }
+    
+    .translator-box {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-rows: auto auto auto;
     }
     
-    .translate-button-container {
-        order: 3;
-        padding-top: 0;
+    .translate-divider {
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid #333333;
+        border-bottom: 1px solid #333333;
+        padding: 0.8rem;
     }
     
-    .translate-btn {
-        width: 100px;
-        height: 100px;
+    .swap-icon {
+        transform: rotate(90deg);
     }
     
-    .translate-btn span {
-        font-size: 0.9rem;
+    .swap-icon:hover {
+        transform: rotate(270deg);
     }
     
-    .braille-btn {
-        font-size: 0.7rem;
+    .output-panel {
+        border-left: none;
+        border-top: 1px solid #333333;
+    }
+    
+    .panel-header {
+        padding: 0.8rem 1rem 0.4rem;
+    }
+    
+    #mainInput,
+    .output-text {
+        padding: 1rem;
+        font-size: 1rem;
     }
 }
 

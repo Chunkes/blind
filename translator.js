@@ -1,8 +1,8 @@
 // Braille Translator JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Словарь для перевода в Брайль (упрощенная версия)
-    const brailleMap = {
+    // Словарь для перевода в Брайль
+    const englishToBrailleMap = {
         'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑',
         'f': '⠋', 'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚',
         'k': '⠅', 'l': '⠇', 'm': '⠍', 'n': '⠝', 'o': '⠕',
@@ -20,12 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Элементы DOM
-    const englishInput = document.getElementById('englishInput');
-    const brailleOutput = document.getElementById('brailleOutput');
-    const translateBtn = document.getElementById('translateBtn');
+    const mainInput = document.getElementById('mainInput');
+    const mainOutput = document.getElementById('mainOutput');
+    const swapBtn = document.getElementById('swapBtn');
     const copyBtn = document.getElementById('copyBtn');
-    const clearBtn = document.getElementById('clearBtn');
     const charCount = document.getElementById('charCount');
+    const leftLanguage = document.getElementById('leftLanguage');
+    const rightLanguage = document.getElementById('rightLanguage');
+    
+    // Состояние направления перевода
+    let isEnglishToBraille = true;
 
     // Функция перевода в Брайль
     function translateToBraille(text) {
@@ -47,10 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Перевод символа
-            if (brailleMap[lowerChar]) {
-                result += brailleMap[lowerChar];
+            if (englishToBrailleMap[lowerChar]) {
+                result += englishToBrailleMap[lowerChar];
             } else {
-                // Неизвестный символ - добавляем как есть
                 result += char;
             }
         }
@@ -58,72 +61,136 @@ document.addEventListener('DOMContentLoaded', function() {
         return result;
     }
 
-    // Обновление счетчика символов
+    // Функция перевода из Брайля в английский (базовая)
+    function translateFromBraille(brailleText) {
+        const brailleToEnglish = {};
+        // Создаем обратный словарь
+        for (const [english, braille] of Object.entries(englishToBrailleMap)) {
+            if (braille !== ' ' && braille !== '\n') {
+                brailleToEnglish[braille] = english;
+            }
+        }
+        
+        let result = '';
+        let i = 0;
+        
+        while (i < brailleText.length) {
+            const char = brailleText[i];
+            
+            if (char === ' ') {
+                result += ' ';
+                i++;
+            } else if (char === '\n') {
+                result += '\n';
+                i++;
+            } else if (char === '⠠') { // Заглавная буква
+                i++;
+                if (i < brailleText.length) {
+                    const nextChar = brailleText[i];
+                    const letter = brailleToEnglish[nextChar];
+                    if (letter) {
+                        result += letter.toUpperCase();
+                    }
+                    i++;
+                }
+            } else {
+                const letter = brailleToEnglish[char];
+                if (letter) {
+                    result += letter;
+                } else {
+                    result += char; // Если не найден, оставляем как есть
+                }
+                i++;
+            }
+        }
+        
+        return result;
+    }
+
+    // Функция обновления счетчика символов
     function updateCharCount() {
-        const count = englishInput.value.length;
+        const count = mainInput.value.length;
         charCount.textContent = count;
         
-        if (count > 450) {
-            charCount.style.color = '#ff6666';
-        } else if (count > 400) {
-            charCount.style.color = '#ffaa66';
+        if (count >= 450) {
+            charCount.style.color = '#ff6b6b';
+        } else if (count >= 400) {
+            charCount.style.color = '#ffa500';
         } else {
             charCount.style.color = '#666666';
         }
     }
 
-    // Функция перевода
-    function performTranslation() {
-        const inputText = englishInput.value.trim();
+    // Функция перевода в реальном времени
+    function performRealTimeTranslation() {
+        const inputText = mainInput.value;
         
         if (!inputText) {
-            brailleOutput.innerHTML = '<div class="placeholder">Enter some text to translate...</div>';
-            brailleOutput.classList.add('empty');
+            mainOutput.innerHTML = '<div class="placeholder">Translation will appear here</div>';
             copyBtn.disabled = true;
             return;
         }
 
-        // Добавляем эффект загрузки
-        translateBtn.style.transform = 'scale(0.95)';
-        translateBtn.querySelector('span').textContent = '⏳ Translating...';
-        translateBtn.disabled = true;
+        let translatedText;
+        if (isEnglishToBraille) {
+            translatedText = translateToBraille(inputText);
+        } else {
+            translatedText = translateFromBraille(inputText);
+        }
+        
+        mainOutput.textContent = translatedText;
+        copyBtn.disabled = false;
+    }
 
-        // Имитация процесса перевода
-        setTimeout(() => {
-            const brailleText = translateToBraille(inputText);
-            brailleOutput.textContent = brailleText;
-            brailleOutput.classList.remove('empty');
-            copyBtn.disabled = false;
-
-            // Восстанавливаем кнопку
-            translateBtn.style.transform = '';
-            translateBtn.querySelector('span').textContent = '🔄 Translate';
-            translateBtn.disabled = false;
-
-            // Добавляем звуковой эффект
-            if (window.playBeep) {
-                playBeep(800, 200, 0.1);
-            }
-        }, 800);
+    // Функция смены языков
+    function swapLanguages() {
+        isEnglishToBraille = !isEnglishToBraille;
+        
+        // Меняем подписи языков
+        if (isEnglishToBraille) {
+            leftLanguage.textContent = 'English';
+            rightLanguage.textContent = 'Braille';
+            mainInput.placeholder = 'Enter text';
+        } else {
+            leftLanguage.textContent = 'Braille';
+            rightLanguage.textContent = 'English';
+            mainInput.placeholder = 'Enter Braille text';
+        }
+        
+        // Меняем содержимое местами
+        const inputContent = mainInput.value;
+        const outputContent = mainOutput.textContent;
+        
+        if (outputContent && !outputContent.includes('Translation will appear here')) {
+            mainInput.value = outputContent;
+            mainOutput.textContent = inputContent;
+        }
+        
+        // Обновляем перевод
+        performRealTimeTranslation();
+        updateCharCount();
+        
+        // Звуковой эффект
+        if (window.playBeep) {
+            playBeep(600, 100, 0.1);
+            setTimeout(() => playBeep(800, 100, 0.1), 150);
+        }
     }
 
     // Функция копирования
     function copyToClipboard() {
-        const brailleText = brailleOutput.textContent;
+        const outputText = mainOutput.textContent;
         
-        if (!brailleText || brailleOutput.classList.contains('empty')) {
+        if (!outputText || outputText.includes('Translation will appear here')) {
             return;
         }
 
-        navigator.clipboard.writeText(brailleText).then(() => {
+        navigator.clipboard.writeText(outputText).then(() => {
             // Показываем уведомление
-            const originalText = copyBtn.querySelector('span').textContent;
-            copyBtn.querySelector('span').textContent = '✅ Copied!';
-            copyBtn.style.background = '#4a7c4a';
+            copyBtn.style.color = '#4ade80';
             
             setTimeout(() => {
-                copyBtn.querySelector('span').textContent = originalText;
-                copyBtn.style.background = '';
+                copyBtn.style.color = '';
             }, 2000);
 
             // Звуковой эффект
@@ -131,65 +198,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 playBeep(1000, 150, 0.08);
             }
         }).catch(() => {
-            copyBtn.querySelector('span').textContent = '❌ Failed';
+            copyBtn.style.color = '#ef4444';
             setTimeout(() => {
-                copyBtn.querySelector('span').textContent = '📋 Copy';
+                copyBtn.style.color = '';
             }, 2000);
         });
     }
 
-    // Функция очистки
-    function clearAll() {
-        englishInput.value = '';
-        brailleOutput.innerHTML = '<div class="placeholder">Your Braille translation will appear here...</div>';
-        brailleOutput.classList.add('empty');
-        copyBtn.disabled = true;
-        updateCharCount();
-        englishInput.focus();
-
-        // Звуковой эффект
-        if (window.playBeep) {
-            playBeep(600, 100, 0.06);
-        }
-    }
-
     // Обработчики событий
-    englishInput.addEventListener('input', updateCharCount);
+    mainInput.addEventListener('input', function() {
+        updateCharCount();
+        performRealTimeTranslation();
+    });
     
-    englishInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
+    mainInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab' && e.ctrlKey) {
             e.preventDefault();
-            performTranslation();
+            swapLanguages();
         }
     });
 
-    translateBtn.addEventListener('click', performTranslation);
+    swapBtn.addEventListener('click', swapLanguages);
     copyBtn.addEventListener('click', copyToClipboard);
-    clearBtn.addEventListener('click', clearAll);
 
     // Инициализация
     updateCharCount();
-    englishInput.focus();
+    mainInput.focus();
+    
+    // Добавляем подсказки
+    mainInput.setAttribute('title', 'Press Ctrl+Tab to swap languages');
+    swapBtn.setAttribute('title', 'Swap languages');
 
-    // Добавляем подсказку для быстрого перевода
-    englishInput.setAttribute('title', 'Press Ctrl+Enter to translate quickly');
-
-    // Автоперевод при вводе (опционально)
-    let autoTranslateTimeout;
-    englishInput.addEventListener('input', function() {
-        clearTimeout(autoTranslateTimeout);
-        autoTranslateTimeout = setTimeout(() => {
-            if (englishInput.value.trim() && englishInput.value.trim().length > 2) {
-                // Автоматический перевод для коротких фраз
-                const brailleText = translateToBraille(englishInput.value);
-                if (brailleText.length < 100) {
-                    brailleOutput.textContent = brailleText;
-                    brailleOutput.classList.remove('empty');
-                    copyBtn.disabled = false;
-                }
-            }
-        }, 1500); // Задержка 1.5 секунды
-    });
-
-    console.log('🦯 Braille Translator loaded successfully!');
+    console.log('🔄 Real-time Braille Translator loaded!');
 });
