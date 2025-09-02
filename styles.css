@@ -1,4 +1,4 @@
-/* Стили для сайта слепых людей */
+
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +13,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Баннер CA ВСЕГДА белый, независимо от состояния body */
+
 body .coming-soon-text {
     color: #ffffff !important;
 }
@@ -22,7 +22,7 @@ body:not(:hover) .coming-soon-text {
     color: #ffffff !important;
 }
 
-/* Навигация */
+
 .navbar {
     background: #111111;
     padding: 0.5rem 0;
@@ -130,7 +130,7 @@ body:not(:hover) .coming-soon-text {
     display: none;
 }
 
-/* Coming Soon Banner - Railway optimized */
+
 .coming-soon-banner {
     display: flex !important;
     flex-direction: column !important;
@@ -175,18 +175,18 @@ body:not(:hover) .coming-soon-text {
     line-height: 1.2;
 }
 
-/* При наведении текст становится видимый - это "фишка" */
+
 body:hover {
     color: #ffffff;
 }
 
-/* НО! Баннер CA всегда остается белым */
+
 body:hover .coming-soon-text,
 body:not(:hover) .coming-soon-text {
     color: #ffffff !important;
 }
 
-/* Принудительно устанавливаем белый цвет для всех состояний баннера */
+
 .coming-soon-banner,
 .coming-soon-banner *,
 body .coming-soon-banner,
@@ -198,7 +198,7 @@ body:not(:hover) .coming-soon-banner * {
     color: #ffffff !important;
 }
 
-/* Контейнер для центрирования хедера */
+
 .header-container {
     display: flex;
     justify-content: center;
@@ -247,7 +247,7 @@ main {
     padding: 2rem;
 }
 
-/* Ограничение для главной страницы */
+
 body:not(.translator-page) main {
     max-width: 800px;
 }
@@ -412,7 +412,7 @@ blockquote:hover {
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-/* Создаем эффект рельефности для точек Брайля */
+
 .braille::before {
     content: '';
     position: absolute;
@@ -440,7 +440,7 @@ blockquote:hover {
     );
 }
 
-/* Звуковая кнопка */
+
 .sound-button {
     display: inline-block;
     padding: 0.8rem 1.5rem;
@@ -492,7 +492,7 @@ footer .braille {
     margin-bottom: 0;
 }
 
-/* Анимация появления */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -508,7 +508,7 @@ footer .braille {
     animation: fadeInUp 0.6s ease-out;
 }
 
-/* Эффект "слепого" курсора */
+
 body::after {
     content: '🦯';
     position: fixed;
@@ -531,7 +531,7 @@ body::after {
     }
 }
 
-/* Дополнительные эффекты для интерактивности */
+
 *:focus {
     outline: 2px solid #555555;
     outline-offset: 2px;
@@ -539,7 +539,7 @@ body::after {
 
 
 
-/* Мобильная адаптивность */
+
 @media (max-width: 768px) {
     h1 {
         font-size: 1.5rem;
@@ -567,7 +567,7 @@ body::after {
     }
 }
 
-/* Google Translate стиль для переводчика */
+
 .translator-main {
     max-width: 1400px;
     margin: 0 auto;
@@ -890,7 +890,7 @@ body::after {
     margin: 0;
 }
 
-/* Адаптивность для переводчика */
+
 @media (max-width: 768px) {
     .translator-main {
         padding: 1rem 1.5rem;
@@ -1027,7 +1027,7 @@ body::after {
     }
 }
 
-/* CRITICAL: Баннер CA должен ВСЕГДА быть белым! */
+
 .coming-soon-banner .coming-soon-text,
 .coming-soon-banner .coming-soon-text:hover,
 body:hover .coming-soon-banner .coming-soon-text,
@@ -1036,4 +1036,32 @@ body:not(:hover) .coming-soon-banner .coming-soon-text,
     color: #ffffff !important;
     opacity: 1 !important;
     visibility: visible !important;
+}
+
+/* X кнопка стили */
+.x-link {
+    background: linear-gradient(135deg, #000000, #1a1a1a) !important;
+    border: 2px solid #333333 !important;
+    color: #ffffff !important;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold !important;
+}
+
+.x-link:hover {
+    background: linear-gradient(135deg, #1a1a1a, #333333) !important;
+    border-color: #555555 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1) !important;
+}
+
+.x-link span {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    transition: all 0.3s ease;
+}
+
+.x-link:hover span {
+    transform: scale(1.1);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
